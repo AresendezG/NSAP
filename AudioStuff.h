@@ -19,7 +19,7 @@ public:
 	const char* OutputName;
 	
 	// Methods
-	void InitAudioStuff();
+	bool InitAudioStuff();
 	static void AudioCallback(void* userdata, Uint8* stream, int streamLength);
 	int LoadAudioFile(const char* AudioFilePath);
 	void DisplayAvailableDevs();
@@ -32,6 +32,7 @@ public:
 private:
 	// Attributes
 	SDL_AudioDeviceID device;
+	bool isFileLoaded;
 	// Methods
 
 };

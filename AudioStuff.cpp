@@ -11,11 +11,16 @@ void AudioStuff() {
 
 }
 
-void AudioStuff::InitAudioStuff() {
+bool AudioStuff::InitAudioStuff() {
 
-	SDL_Init(SDL_INIT_EVERYTHING);
+	// Load the SDL Library and return true if everything was loaded successfully
+	// At the beginning, no audio file is Loaded
+	isFileLoaded = false;
 
-	return;
+	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+		return true;
+	else 
+		return false;
 }
 
 void AudioStuff::AudioCallback(void* userdata, Uint8* stream, int streamLength) {
@@ -41,11 +46,13 @@ void AudioStuff::DisplayAvailableDevs() {
 	
 	int count = SDL_GetNumAudioDevices(0);
 
+	std::cout << "<Begin of list [Available Outputs]>" << std::endl;
 	for (int i = 0; i < count; ++i)
 	{
-		std::cout << "Device " << i << ": " << SDL_GetAudioDeviceName(i, 0) << std::endl;
-		
+		std::cout << "Device " << i << ": " << SDL_GetAudioDeviceName(i, 0) << std::endl;		
 	}
+	
+	std::cout << "<End of List>" << std::endl;
 }
 
 int AudioStuff::FindSpecificDev(const char* DevToFind) {
@@ -66,20 +73,21 @@ int AudioStuff::FindSpecificDev(const char* DevToFind) {
 }
 
 int AudioStuff::LoadAudioFile(const char* AudioFilePath) {
-	
+	/* Argument: Pass the full path to your audio File */
 
 	if (SDL_LoadWAV(AudioFilePath, &wavSpec, &wavStart, &wavLength) == NULL)
 	{
-		std::cerr << "Could not load file!" << std::endl;
+		std::cerr << "ERROR: Could not load file >" << std::endl;
 		return -1;
 	}
 	else 
 	{
-		std::cout << "Successull Load! " << std::endl;
-		return 1;
+		// std::cout << "Successull Load! " << std::endl;
+		return 10;
 	}
 		
 }
+
 
 int AudioStuff::OpenAudioDev(const char* AudioDeviceToOpen) {
 
@@ -91,7 +99,7 @@ int AudioStuff::OpenAudioDev(const char* AudioDeviceToOpen) {
 	device = SDL_OpenAudioDevice(AudioDeviceToOpen, 0, &wavSpec, NULL, SDL_AUDIO_ALLOW_ANY_CHANGE);
 
 	if (device == 0) {
-		std::cerr << "Error: " << SDL_GetError() << std::endl;
+		std::cerr << "ERROR: " << SDL_GetError() << std::endl;
 		return -2;
 	}
 	else
@@ -113,7 +121,7 @@ void AudioStuff::PlaybackControl(int Opt) {
 		audio.pos = wavStart;
 		break;
 	default:
-		std::cout << "Default Opt" << std::endl;
+		std::cout << "Default Option >" << std::endl;
 		break;
 	}
 
