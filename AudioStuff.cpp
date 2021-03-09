@@ -45,14 +45,13 @@ void AudioStuff::AudioCallback(void* userdata, Uint8* stream, int streamLength) 
 void AudioStuff::DisplayAvailableDevs() {
 	
 	int count = SDL_GetNumAudioDevices(0);
-
-	std::cout << "<Begin of list [Available Outputs]>" << std::endl;
+	std::cout << "<Begin of list [Available Outputs]>" << std::endl;	
 	for (int i = 0; i < count; ++i)
 	{
 		std::cout << "Device " << i << ": " << SDL_GetAudioDeviceName(i, 0) << std::endl;		
-	}
-	
+	}	
 	std::cout << "<End of List>" << std::endl;
+	
 }
 
 int AudioStuff::FindSpecificDev(const char* DevToFind) {
